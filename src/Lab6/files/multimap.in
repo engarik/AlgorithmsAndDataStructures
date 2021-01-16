@@ -1,0 +1,11 @@
+put a a
+put a b
+put a c
+put a d
+put a e
+put a f
+get a
+delete a a
+delete a b
+delete a c
+get a
