@@ -53,8 +53,8 @@ public class Task3 {
                         break;
                     }
                     case "next": {
-                        tmp = tree.next(value);
-                        out.println(t != null ? res : "none");
+//                        tmp = tree.next(value);
+//                        out.println(tmp != null ? res : "none");
                         break;
                     }
                     case "prev": {
@@ -91,11 +91,14 @@ public class Task3 {
         }
 
         private int next(int value) {
-            return findMin(findNodeByValue(head, value).rightChild) != null ?;
+//            return findMin(findNodeByValue(head, value).rightChild) != null ?;
+            return value;
         }
 
+
         private int prev(int value) {
-            return findMax(findNodeByValue(head, value).leftChild) != null;
+//            return findMax(findNodeByValue(head, value).leftChild) != null;
+            return value;
         }
 
         private TreeNode addNode(TreeNode node, int value) {

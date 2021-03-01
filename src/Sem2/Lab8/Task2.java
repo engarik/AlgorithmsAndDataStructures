@@ -1,21 +1,28 @@
-/* Kornilov Nikita, M3102, 10.09.2020 */
-package Sem1.Lab1;
+/* Kornilov Nikita, M3102, 22.02.2021 */
+
+package Sem2.Lab8;
 
 import java.io.*;
 import java.util.*;
 
-public class Task4 {
+public class Task2 {
     BufferedReader br;
     StringTokenizer in;
     PrintWriter out;
 
     public static void main(String[] args) {
-        new Task4().run("smallsort.in", "smallsort.out");
+        String inputFileName = "input.txt", outFileName = "output.txt";
+        new Task2().run(String.format("%s", inputFileName), String.format("%s", outFileName));
     }
 
     public String nextToken() throws IOException {
         while (in == null || !in.hasMoreTokens()) {
-            in = new StringTokenizer(br.readLine());
+            String inputString = br.readLine();
+            if (inputString != null) {
+                in = new StringTokenizer(inputString);
+            } else {
+                return null;
+            }
         }
         return in.nextToken();
     }
@@ -26,35 +33,33 @@ public class Task4 {
 
     public void solve() throws IOException {
         int n = nextInt();
-        int[] array = new int[n];
+        int[][] matrix = new int[n][n];
+        boolean undirected = true;
 
         for (int i = 0; i < n; i++) {
-            array[i] = nextInt();
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = nextInt();
+            }
         }
 
-        for (int i = array.length - 1; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (array[j] > array[j + 1]) {
-                    int tmp = array[j];
-                    array[j] = array[j + 1];
-                    array[j + 1] = tmp;
+        out: for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (matrix[i][j] != matrix[j][i] || (i == j) & matrix[i][j] == 1) {
+                    undirected = false;
+                    break out;
                 }
             }
         }
 
-        for (int i : array) {
-            out.print(i);
-            out.print(" ");
-        }
+        out.println(undirected ? "YES" : "NO");
+
     }
 
     public void run(String inputFile, String outputFile) {
         try {
             br = new BufferedReader(new FileReader(inputFile));
             out = new PrintWriter(outputFile);
-
             solve();
-
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
