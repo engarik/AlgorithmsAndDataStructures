@@ -1,17 +1,17 @@
-/* Kornilov Nikita, M3102, 22.02.2021 */
+/* Kornilov Nikita, M3102, 14.03.2021 */
 
-package Sem2.Lab8;
+//package Sem2.Lab9;
 
 import java.io.*;
 import java.util.*;
 
-public class Task4 {
+public class Task3 {
     BufferedReader br;
     StringTokenizer in;
     PrintWriter out;
 
     class Graph {
-        private final int V; //
+        private final int V;
         private int E;
         private ArrayList<Integer>[] adj;
 
@@ -43,71 +43,55 @@ public class Task4 {
         }
 
         public void addEdge(int v, int w) {
-            adj[v].add(w);
-            adj[w].add(v);
-            E++;
+            if (v != w && !adj[v].contains(w) && !adj[w].contains(w)) {
+                adj[v].add(w);
+                E++;
+            }
+
         }
 
         public Iterable<Integer> adj(int v) {
             return adj[v];
         }
-
-        @Override
-        public String toString() {
-            StringBuilder s = new StringBuilder(String.format("%d vertices, %d edges\n", V, E));
-            for (int v = 0; v < V; v++) {
-                s.append(v).append(": ");
-                for (int w : this.adj(v)) {
-                    s.append(w).append(" ");
-                }
-                s.append("\n");
-            }
-            return s.toString();
-        }
     }
 
-    class CC {
+    class Bipartite {
         private boolean[] marked;
-        private int[] id;
-        private int count;
+        private boolean[] color;
+        private boolean isBipartite = true;
 
-        public CC(Graph G) {
-            marked = new boolean[G.getV()];
-            id = new int[G.getV()];
-            for (int s = 0; s < G.getV(); s++) {
+        public Bipartite(Graph graph) {
+            marked = new boolean[graph.getV()];
+            color = new boolean[graph.getV()];
+
+            for (int s = 0; s < graph.getV(); s++) {
                 if (!marked[s]) {
-                    dfs(G, s);
-                    count++;
+                    dfs(graph, s);
                 }
             }
         }
 
-        private void dfs(Graph G, int v) {
+        private void dfs(Graph graph, int v) {
             marked[v] = true;
-            id[v] = count;
-            for (int w :G.adj(v)) {
+            for (int w : graph.adj(v)) {
                 if (!marked[w]) {
-                    dfs(G, w);
+                    color[w] = !color[v];
+                    dfs(graph, w);
+                } else if (color[w] == color[v]) {
+                    isBipartite = false;
+                    break;
                 }
             }
         }
 
-        public boolean isConnected(int v, int w) {
-            return id[v] == id[w];
-        }
-
-        public int getId(int v) {
-            return id[v];
-        }
-
-        public int getCount() {
-            return count;
+        public boolean isBipartite() {
+            return isBipartite;
         }
     }
 
     public static void main(String[] args) {
-        String fileName = "components";
-        new Task4().run(String.format("%s.in", fileName), String.format("%s.out", fileName));
+        String fileName = "bipartite";
+        new Task3().run(String.format("%s.in", fileName), String.format("%s.out", fileName));
     }
 
     public String nextToken() throws IOException {
@@ -115,7 +99,8 @@ public class Task4 {
             String inputString = br.readLine();
             if (inputString != null) {
                 in = new StringTokenizer(inputString);
-            } else {
+            }
+            else {
                 return null;
             }
         }
@@ -129,38 +114,19 @@ public class Task4 {
     public void solve() throws IOException {
         Graph graph = new Graph();
 
-        CC cc = new CC(graph);
+        Bipartite bipartite = new Bipartite(graph);
 
-        int M = cc.getCount();
-
-        out.println(M);
-
-//        ArrayList<Integer>[] components;
-//        components = (ArrayList<Integer>[]) new ArrayList[M];
-
-//        for (int i : cc.id)
-//            out.print(i + 1 + " ");
-//        out.println();
-
-//        for (int i = 0; i < M; i++) {
-//            components[i] = new ArrayList<>();
-//        }
-//        for (int v = 0; v < graph.getV(); v++) {
-//            components[cc.getId(v)].add(v);
-//        }
-//
-        for (int v = 0; v < graph.getV(); v++) {
-            out.print(cc.getId(v) + 1 + " ");
-        }
-
-
+        out.println(bipartite.isBipartite() ? "YES" : "NO");
     }
 
     public void run(String inputFile, String outputFile) {
         try {
+
             br = new BufferedReader(new FileReader(inputFile));
             out = new PrintWriter(outputFile);
+
             solve();
+
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
