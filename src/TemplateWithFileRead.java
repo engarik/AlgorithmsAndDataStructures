@@ -3,14 +3,14 @@
 import java.io.*;
 import java.util.*;
 
-public class Template {
+public class TemplateWithFileRead {
     BufferedReader br;
     StringTokenizer in;
     PrintWriter out;
 
     public static void main(String[] args) {
         String fileName = "filename";
-        new Template().run(String.format("%s.in", fileName), String.format("%s.out", fileName));
+        new TemplateWithFileRead().run(String.format("%s.in", fileName), String.format("%s.out", fileName));
     }
 
     public String nextToken() throws IOException {
@@ -49,12 +49,9 @@ public class Template {
 
     public void run(String inputFile, String outputFile) {
         try {
-
             br = new BufferedReader(new FileReader(inputFile));
             out = new PrintWriter(outputFile);
-
             solve();
-
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
