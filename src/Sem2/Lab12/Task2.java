@@ -59,21 +59,13 @@ public class Task2 {
             else {
                 parent[i] = map.get(inputArray[i]);
             }
-
-            out.println(map);
-
         }
-
-        out.println(map);
-        out.println(Arrays.toString(inputArray));
-        out.println(Arrays.toString(parent));
 
         Stack<Integer> lis = new Stack<>();
 
         Iterator<Integer> iterator = map.descendingKeySet().iterator();
 
-//        int index = map.lastEntry().getValue();
-        int index = map.get(5);
+        int index = map.lastEntry().getValue();
 
         while (iterator.hasNext()) {
             lis.push(inputArray[index]);

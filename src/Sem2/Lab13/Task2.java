@@ -49,9 +49,6 @@ public class Task2 {
             long pHash = polynomialHash(p);
             long[] tHash = buildHash();
 
-            System.out.println(pHash);
-            System.out.println(Arrays.toString(tHash));
-
             out: for (int i = 0; i < n - m + 1; i++) {
                 if (tHash[i] != pHash)
                     continue;
